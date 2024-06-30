@@ -1,48 +1,44 @@
-_This is my modified version of https://github.com/COVAIL/photon. I am attempting to resolve some of the issues identified there. Thanks to the team at COVAIL for the solid start on this project!_
+_This is a modified version of https://github.com/COVAIL/photon. I am attempting to resolve some of the issues identified there. Thanks to the team at COVAIL for the solid start on this project!_
 
-_Once I got into this I realized it might be better to use https://github.com/COVAIL/electron-quick-start instead. This project seems to create a UI to make the process easier, but given the state of it it might be best to just use that other repo. It's a bit more complicated but might be doable if you are familiar with Node.js._
+# photon
 
-> Photon doesn't work with any package that has to be compiled. This requires management of the temporary directory for libPath to be used for compiling packages, which must changed in the bash script that launches R.
+Photon builds a standalone Shiny app by leveraging the Electron framework. 
 
-# Photon Package
-
-Photon builds standalone Shiny app by leveraging the Electron framework in Mac OS and Windows operating systems. This package clones the [Columbus Collaboratory electron-quick-start repository](https://github.com/ColumbusCollaboratory/electron-quick-start) which is forked to the electron-quick-start git repository plus Mac and Windows R portables. Photon will be extended to Linux in the near future. This work is still under development.
-
-# Instructions
+## Instructions
 
 1. Install [Node.js](https://nodejs.org/en/download/)
-2. Create an app/ folder in the project and place your app's files there, or use the app.R file that is already there.
+2. Download/extract or clone https://github.com/superchordate/electron-shiny.
 3. Install this package with `remotes::install_github("superchordate/photon")`.
-4. Start the mini UI by running `photon::launch_ui()` in RStudio, and finish building the app through it.
+4. Run your app using `photon::run_build`. 
 
-# Installing Packages
-The Mac and Windows R Portables currently come many pre-loaded packages that were selected by popularity. If additional packages (currently only CRAN and Bioconductor packages work; GitHub coming soon) are required, users can enter in a comma-separated string containing the package names of interest in the miniUI. These packages will install the packages to the relative version of R portable that will be subsequently packaged in to an Electron standalone application.    
+```r
+run_build(
+  type = 'run',
+  electron_shiny_path = 'path/to/electron-shiny',
+  app_path = 'path/to/app'
+)
+```
 
-If no packages are needed to install, type `NULL` as the entry for those specific repositories.
+5. Build your app:
 
-# Issues
-Please submit a pull request for issues related to this package.  
+```r
+run_build(
+  type = 'build',
+  electron_shiny_path = 'path/to/electron-shiny',
+  app_path = 'path/to/app'
+)
+```
 
-# References
-2019 slides and presentation 
-https://www.user2019.fr/static/pres/lt257916.pdf 
-https://youtu.be/Dn9VRUBFvyc?t=1167
+## Notes
 
-Older 2018 version
-https://github.com/ksasso/useR_electron_meet_shiny/blob/master/electron_slides.Rmd
-https://www.youtube.com/watch?v=ARrbbviGvjc
-https://www.youtube.com/embed/O56WR-yQFC0
-https://www.youtube.com/embed/hZXlgdNOqwA
-https://www.youtube.com/embed/HDokkYmJKCk
+* R Compilation: `run_build` has an argument `r_path = R.home()` you can use to point the build process to a specific version of R. The build will copy the R installation to `electron-shiny/R` for packaging into the app. This means any packages you have installed should work in your electron app, and the built app will only work on your current OS. If you need a different OS version, you'll need to run the process and build on a machine running that OS.
 
-# Contact
-For photon questions contact pgordon@cbuscollaboratory.com   
-For questions about the implementation of Electron, Chromium or node.js contact pgordon@cbuscollaboratory.com   
-For questions about the R portable contact snikitin@cbuscollaboratory.com  
-
+* There is a demo app saved in this repo which you can use (it is used by default) via `app_path = 'app/'`
 
 
 
+## About Me
 
+I'm an independent contractor helping companies build custom cloud apps and leverage data science, visual analytics, and AI. I offer low introductory rates, free consultation and estimates, and no minimums, so contact me today and let's chat about how I can help!
 
-
+https://www.bryce-chamberlain.com/
