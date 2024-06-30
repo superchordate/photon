@@ -54,11 +54,15 @@ startFun <- function(input_path, cran_packages=NULL, bioc_packages=NULL, github_
                                                     "[0-9]+\\.[0-9]+\\.[0-9]+")
   }
     
-  # replace NULL with character so it can be used in paths.
-  null_string = function(x) if(is.null(x)) { 'NULL' } else { x }
-  bioc_packages = null_string(bioc_packages)
-  cran_packages = null_string(cran_packages)
-  github_packages = null_string(github_packages)
+  # build args.
+  if(all(sapply(c(bioc_packages, cran_packages, github_packages), is.null))){
+    args = ''
+  } else {
+    args = '--args'
+    if(!is.null(bioc_packages)) args = paste0(args, ' bioc_packages ', bioc_packages)
+    if(!is.null(cran_packages)) args = paste0(args, ' cran_packages ', cran_packages)
+    if(!is.null(github_packages)) args = paste0(args, ' github_packages ', github_packages)
+  }
   
   if(.Platform$OS.type=="windows"){
     
@@ -67,12 +71,10 @@ startFun <- function(input_path, cran_packages=NULL, bioc_packages=NULL, github_
     
     shell(
       sprintf(
-        "%s/R.exe --file=%s/install_packages.R -q --slave --args cran_packages %s github_packages %s bioc_packages %s", 
+        "%s/R.exe --file=%s/install_packages.R -q --slave %s", 
         r_portable_path, 
         r_portable_path,
-        cran_packages,
-        github_packages,
-        bioc_packages
+        args
       )
     )
     
@@ -109,11 +111,9 @@ startFun <- function(input_path, cran_packages=NULL, bioc_packages=NULL, github_
     
     system(
       sprintf(
-        "cd %s; ./R --file=./install_packages.R -q --slave --args cran_packages %s github_packages %s bioc_packages %s", 
+        "cd %s; ./R --file=./install_packages.R -q --slave %s", 
         r_portable_path, 
-        cran_packages,
-        github_packages,
-        bioc_packages
+        args
       ), wait=TRUE
     )
     
