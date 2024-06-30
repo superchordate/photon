@@ -32,18 +32,18 @@ photon_rstudioaddin <- function(RscriptRepository = NULL) {
         shiny::h4("CRAN Packages:"),
         shiny::textInput('cran_packages',
                          label = ("ex: mgcv,matrixStats"),
-                         value = "NULL"),
+                         value = ''),
         shiny::br(),
 
         div(
             shiny::tags$b("Advanced Options:"), NULL,
             shiny::textInput('github_packages',
                                label = "GitHub packages (ex. thomasp85/patchwork):",
-                               value = "NULL", width = "100%"),
+                               value = '', width = "100%"),
 
               shiny::textInput('bioc_packages',
                                label = "Bioconductor packages (ex. SummarizedExperiment,VariantAnnotation):",
-                               value = "NULL", width = "100%")
+                               value = '', width = "100%")
              
                    # shiny::textInput('rscript_args',
                    #                  label = "Additional arguments to Rscript",
