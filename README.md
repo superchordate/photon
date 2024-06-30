@@ -14,7 +14,7 @@ Photon is an R package that contains an RStudio add-in miniUI that builds a Phot
 # Usage
 
 ```r
-remotes::install_github("ColumbusCollaboratory/photon")
+remotes::install_github("superchordate/photon")
 library(photon)
 ```
 
