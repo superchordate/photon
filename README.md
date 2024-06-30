@@ -13,7 +13,7 @@ Photon builds standalone Shiny app by leveraging the Electron framework in Mac O
 1. Install [Node.js](https://nodejs.org/en/download/)
 2. Create an app/ folder in the project and place your app's files there, or use the app.R file that is already there.
 3. Install this package with `remotes::install_github("superchordate/photon")`.
-4. Start the mini UI by running `photon::photon_rstudioaddin()` in RStudio, and finish building the app through it. Alternatively, you can start the mini UI via Tools > Addins > Browse Addins > "photon" > "Execute".
+4. Start the mini UI by running `photon::launch_ui()` in RStudio, and finish building the app through it.
 
 # Installing Packages
 The Mac and Windows R Portables currently come many pre-loaded packages that were selected by popularity. If additional packages (currently only CRAN and Bioconductor packages work; GitHub coming soon) are required, users can enter in a comma-separated string containing the package names of interest in the miniUI. These packages will install the packages to the relative version of R portable that will be subsequently packaged in to an Electron standalone application.    

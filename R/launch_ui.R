@@ -4,7 +4,8 @@
 #'
 
 
-photon_rstudioaddin <- function(RscriptRepository = NULL) {
+launch_ui <- function(RscriptRepository = NULL) {
+  
   requireNamespace("shiny")
   requireNamespace("miniUI")
   requireNamespace("shinyFiles")
@@ -80,9 +81,12 @@ photon_rstudioaddin <- function(RscriptRepository = NULL) {
     output$currentdirselected <-
       shiny::renderText({
         req(input$dirSelect)
+        dirSelect = input$dirSelec
+        if(is.null(dirSelect) || dirSelect == '') dirSelect = 'app/'
         
         print(paste("Selected directory:", 
                      as.character(shinyFiles::parseDirPath(volumes, input$dirSelect))))
+                     
       })
     
     
