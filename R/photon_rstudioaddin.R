@@ -35,9 +35,8 @@ photon_rstudioaddin <- function(RscriptRepository = NULL) {
                          value = "NULL"),
         shiny::br(),
 
-        shinyBS::bsCollapse(id = "adv", open = NULL,
-          shinyBS::bsCollapsePanel(
-            shiny::tags$b("> Click for Advanced Options"), NULL,
+        div(
+            shiny::tags$b("Advanced Options:"), NULL,
             shiny::textInput('github_packages',
                                label = "GitHub packages (ex. thomasp85/patchwork):",
                                value = "NULL", width = "100%"),
@@ -53,7 +52,7 @@ photon_rstudioaddin <- function(RscriptRepository = NULL) {
                    #                  label = "R script repository path: launch & log location",
                    #              value =NULL, width = "100%")))
        
-        )))),
+        ))),
       miniUI::miniButtonBlock(
         actionButton("create", "Build", icon("play-circle"),
                      style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
@@ -85,10 +84,6 @@ photon_rstudioaddin <- function(RscriptRepository = NULL) {
         print(paste("Selected directory:", 
                      as.character(shinyFiles::parseDirPath(volumes, input$dirSelect))))
       })
-    
-    observeEvent(input$coll, ({
-      shinyBS::updateCollapse(session, "adv", open = "Advanced Options")
-    }))
     
     
     ###########################
