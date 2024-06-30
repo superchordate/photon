@@ -11,23 +11,12 @@ startFun <- function(input_path, cran_packages=NULL, bioc_packages=NULL, github_
   message("Running Photon")
 
   input_path <- normalizePath(input_path)
-  electron_path <- normalizePath(
-    file.path(
-      input_path,
-      "electron-quick-start"
-      )
-    )
+  electron_path <- normalizePath(file.path("electron-r"))
 
-  #confirm versions greater than (node 8.4.0 and npm 5.3)
-  nodeVersion <- system2('node', 
-                         args='-v', 
-                         stdout=TRUE, 
-                         stderr=TRUE)
-  
-  npmVersion <- system2("npm",
-                        args="-v", 
-                        stdout=TRUE, 
-                        stderr=TRUE)
+  # confirm versions greater than (node 8.4.0 and npm 5.3)
+  nodeVersion <- system2('node', args='-v', stdout=TRUE, stderr=TRUE)  
+  npmVersion <- system2("npm", args="-v", stdout=TRUE, stderr=TRUE)
+
   #if node not available, notify to install node and npm globally 
   
   electronPackagerVersion <- system2("npm", args="list -g electron-packager" , stdout=TRUE, stderr=TRUE, wait=TRUE)
@@ -35,23 +24,10 @@ startFun <- function(input_path, cran_packages=NULL, bioc_packages=NULL, github_
   if(grepl("electron", electronPackagerVersion[2])){
     electronPackagerVersion <- stringr::str_extract(electronPackagerVersion[2], "[0-9]+\\.[0-9]+\\.[0-9]+")
   } else{
-    system2("npm",
-            args='install electron --verbose', 
-            stdout = TRUE, 
-            stderr = TRUE, 
-            wait = TRUE)
-    system2("npm",
-            args='install electron-packager -g', 
-            stdout = TRUE, 
-            stderr = TRUE, 
-            wait = TRUE)
-    electronPackagerVersion <- system2("npm", 
-                                       args="list -g electron-packager",
-                                       stdout=TRUE, 
-                                       stderr=TRUE, 
-                                       wait=TRUE)
-    electronPackagerVersion <- stringr::str_extract(electronPackagerVersion[2],
-                                                    "[0-9]+\\.[0-9]+\\.[0-9]+")
+    system2("npm", args='install electron --verbose', stdout = TRUE, stderr = TRUE, wait = TRUE)
+    system2("npm",args='install electron-packager -g', stdout = TRUE, stderr = TRUE, wait = TRUE)    
+    electronPackagerVersion <- system2("npm", args="list -g electron-packager", stdout=TRUE, stderr=TRUE, wait=TRUE)
+    electronPackagerVersion <- stringr::str_extract(electronPackagerVersion[2], "[0-9]+\\.[0-9]+\\.[0-9]+")
   }
     
   # build args.
@@ -68,63 +44,44 @@ startFun <- function(input_path, cran_packages=NULL, bioc_packages=NULL, github_
     
     r_portable_path <- normalizePath(file.path(electron_path, "R-Portable-Win", "bin"))
     
-    
-    shell(
-      sprintf(
+    shell(sprintf(
         "%s/R.exe --file=%s/install_packages.R -q --slave %s", 
         r_portable_path, 
         r_portable_path,
         args
-      )
-    )
+    ))
     
     #input_app_dir <- stringr::str_replace_all(input_path, "/", "\\\\")
     #electron_win_dir <- stringr::str_replace_all(electron_path, "/", "\\\\")
     input_app_dir <- input_path
     electron_win_dir <- electron_path
     
+    file.copy(normalizePath(file.path(input_app_dir, "app.R")), electron_win_dir, overwrite=TRUE)
     
+    shell(sprintf("cd %s && npm install", electron_win_dir))
     
-    
-    file.copy(normalizePath(file.path(input_app_dir, "app.R")), 
-                      electron_win_dir,
-              overwrite=TRUE)
-    
-    shell(sprintf("cd %s && npm install",
-                  electron_win_dir))
-    
-    shell(sprintf("cd %s && npm run package-win",
-                  electron_win_dir))
+    shell(sprintf("cd %s && npm run package-win", electron_win_dir))
     
     
   } else if(.Platform$OS.type=="unix") {
     r_portable_path <- normalizePath(file.path(input_path, "R-Portable-Mac"))
+    r_electron_version <- system(sprintf("cd %s; ./R CMD BATCH --version", r_portable_path), intern = TRUE, wait=TRUE)[5]    
+    r_electron_version <- stringr::str_extract(r_electron_version, "[0-9]+\\.[0-9]+\\.[0-9]+")
     
-    
-    r_electron_version <- system(sprintf("cd %s; ./R CMD BATCH --version", 
-                                         r_portable_path),
-                                 intern = TRUE, 
-                                 wait=TRUE)[5]
-    
-    r_electron_version <- stringr::str_extract(r_electron_version,
-                                               "[0-9]+\\.[0-9]+\\.[0-9]+")
-    
-    system(
-      sprintf(
+    system(sprintf(
         "cd %s; ./R --file=./install_packages.R -q --slave %s", 
         r_portable_path, 
         args
-      ), wait=TRUE
-    )
+    ), wait=TRUE)
     
-    file.copy(sprintf("%s/app.R",
-                      input_path),
-              sprintf("%s/electron-quick-start",
-                      input_path),
-              overwrite=TRUE)
+    file.copy(
+      sprintf("%s/app/app.R", input_path),
+      sprintf("%s/electron-r", input_path),
+      overwrite=TRUE
+    )
 
-    system(sprintf("cd %s; npm install; npm run package-mac", 
-                   r_portable_path))
+    system(sprintf("cd %s; npm install; npm run package-mac", r_portable_path))
+    
   }
 }
 
