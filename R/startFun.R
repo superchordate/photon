@@ -54,37 +54,15 @@ startFun <- function(input_path, cran_packages=NULL, bioc_packages=NULL, github_
                                                     "[0-9]+\\.[0-9]+\\.[0-9]+")
   }
     
-  #confirm git is installed and available
-  gitVersion <- system2("git", args="--version", stdout=TRUE, stderr=TRUE)
-  gitVersion <- stringr::str_extract(gitVersion, "[0-9]+\\.[0-9]+\\.[0-9]+")
-  #if git not available, notify to install git
-  #git clone electron-shiny sample app
-  
-  if(!dir.exists(electron_path)){
-    system2("git", 
-            args=c("clone https://github.com/ColumbusCollaboratory/electron-quick-start", electron_path),
-            stdout = TRUE, 
-            stderr = TRUE,
-            wait=TRUE)
-  }
-  
-
+  # replace NULL with character so it can be used in paths.
+  null_string = function(x) if(is.null(x)) { 'NULL' } else { x }
+  bioc_packages = null_string(bioc_packages)
+  cran_packages = null_string(cran_packages)
+  github_packages = null_string(github_packages)
   
   if(.Platform$OS.type=="windows"){
     
     r_portable_path <- normalizePath(file.path(electron_path, "R-Portable-Win", "bin"))
-  
-    if(is.null(bioc_packages)){
-      bioc_packages <- "NULL"
-    } 
-    
-    if (is.null(cran_packages)){
-      cran_packages <- "NULL"
-    } 
-    
-    if (is.null(github_packages)){
-      github_packages <- "NULL"
-    }
     
     
     shell(
@@ -128,18 +106,6 @@ startFun <- function(input_path, cran_packages=NULL, bioc_packages=NULL, github_
     
     r_electron_version <- stringr::str_extract(r_electron_version,
                                                "[0-9]+\\.[0-9]+\\.[0-9]+")
-    
-    if(is.null(bioc_packages)){
-      bioc_packages <- "NULL"
-    } 
-    
-    if (is.null(cran_packages)){
-      cran_packages <- "NULL"
-    } 
-    
-    if (is.null(github_packages)){
-      github_packages <- "NULL"
-    }
     
     system(
       sprintf(
