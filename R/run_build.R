@@ -15,11 +15,12 @@ run_build <- function(
 
   # copy app and R files into the electron directory.
   copyfolder = function(from, to, force = FALSE){
-    if(dir.exists(to)) if(!force){      
-      return()
+    if(dir.exists(to)){
+      if(!force) return()
     } else {
       dir.create(to)
     }
+    if(!dir.exists(to)) stop(paste0('The directory [', to, '] does not exist.'))
     cat(paste0('copying [', from, '] to [', to, ']\n'))
     file.copy(paste0(from, '/.'), paste0(to, '/.'), recursive = TRUE, overwrite = TRUE)
   }
