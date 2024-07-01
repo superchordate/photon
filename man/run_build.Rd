@@ -4,7 +4,12 @@
 \alias{run_build}
 \title{The main photon function}
 \usage{
-run_build(type = c("run", "build"), electron_shiny_path, app_path, r_path = R.home())
+run_build(
+  type = c("run", "build"),
+  electron_shiny_path,
+  app_path,
+  r_path = R.home()
+)
 }
 \arguments{
 \item{type}{Choose whether to run or build the app. I suggest run it before you build it.}

@@ -6,8 +6,8 @@
 #' @export
 run_build <- function(
   type = c('run', 'build'),
-  electron_shiny_path= '../electron-shiny',
-  app_path = 'app/',
+  electron_shiny_path,
+  app_path,
   r_path = R.home()
 ){
   
