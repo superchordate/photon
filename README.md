@@ -7,34 +7,17 @@ Photon builds a standalone Shiny app by leveraging the Electron framework.
 ## Instructions
 
 1. Install [Node.js](https://nodejs.org/en/download/)
-2. Download/extract or clone https://github.com/superchordate/electron-shiny.
+2. Create a new folder called `photon-test`. You'll need two repos for this to work. 
+3. Clone this repo into the folder with Git bash here > `git clone https://github.com/superchordate/photon.git`
+3. Clone `electron-quick-start-shiny` into the folder with Git bash here > `git clone https://github.com/superchordate/electron-quick-start-shiny`
 3. Install this package with `remotes::install_github("superchordate/photon")`.
-4. Run your app using `photon::run_build`. 
-
-```r
-run_build(
-  type = 'run',
-  electron_shiny_path = 'path/to/electron-shiny',
-  app_path = 'path/to/app'
-)
-```
-
-5. Build your app:
-
-```r
-run_build(
-  type = 'build',
-  electron_shiny_path = 'path/to/electron-shiny',
-  app_path = 'path/to/app'
-)
-```
+4. Run the example at `photon/examples/run-build.R`
 
 ## Notes
 
 * R Compilation: `run_build` has an argument `r_path = R.home()` you can use to point the build process to a specific version of R. The build will copy the R installation to `electron-shiny/R` for packaging into the app. This means any packages you have installed should work in your electron app, and the built app will only work on your current OS. If you need a different OS version, you'll need to run the process and build on a machine running that OS.
 
-* There is a demo app saved in this repo which you can use (it is used by default) via `app_path = 'app/'`
-
+* There is a demo app saved in this repo which you can use to run an example. Clone the repo with `git clone https://github.com/superchordate/photon.git` and point `app_path` to the `app/` folder.
 
 
 ## About Me

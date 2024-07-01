@@ -1,4 +1,5 @@
-\.git
-\.gitignore
-build-package\.R
-README\.md
+.git/
+.gitignore
+build-package.R
+README.md
+examples/
