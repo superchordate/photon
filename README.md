@@ -17,8 +17,6 @@ Photon builds a standalone Shiny app by leveraging the Electron framework.
 
 * R Compilation: `run_build` has an argument `r_path = R.home()` you can use to point the build process to a specific version of R. The build will copy the R installation to `electron-shiny/R` for packaging into the app. This means any packages you have installed should work in your electron app, and the built app will only work on your current OS. If you need a different OS version, you'll need to run the process and build on a machine running that OS.
 
-* There is a demo app saved in this repo which you can use to run an example. Clone the repo with `git clone https://github.com/superchordate/photon.git` and point `app_path` to the `app/` folder.
-
 
 ## About Me
 
