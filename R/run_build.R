@@ -48,5 +48,3 @@ run_build <- function(
   }
 
 }
-
-run_build(type = 'run')
